@@ -3,7 +3,7 @@ import sizeOf from 'image-size';
 import fs from 'fs';
 import {basename, join} from 'path';
 
-export default function download({urls, dimensionLimit, savePath, size = 200, headers = {}, delay = 500}) {
+export default function download({urls, dimensionLimit, savePath, headers = {}, delay = 500}) {
 
   return new Promise((resolve, reject) => {
 
@@ -16,7 +16,7 @@ export default function download({urls, dimensionLimit, savePath, size = 200, he
         if (! url) {
           return resolve();
         }
-        singleDownload({url, savePath, size, headers})
+        singleDownload({url, savePath, headers})
           .then(({dimensions, buffer}) => {
 
             const path = join(savePath, basename(url));
@@ -51,7 +51,7 @@ function writeFile(path, buffer) {
   });
 }
 
-function singleDownload({url, size, headers}) {
+function singleDownload({url, headers}) {
 
   return new Promise((resolve, reject) => {
 

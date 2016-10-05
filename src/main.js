@@ -9,8 +9,16 @@ program.version('0.0.1')
   .option('-e, --ext [extensions]', 'Specify image types to crawl', 'jpg,jpeg,png,gif')
   .option('-d, --delay [delay]', 'Duration between each request', 300)
   .option('-w, --width [imageWidth]', 'Duration between each request', 300)
-  .option('-h, --height [imageHeight]', 'Duration between each request', 300)
-  .parse(process.argv);
+  .option('-h, --height [imageHeight]', 'Duration between each request', 300);
+
+program.on('--help', function(){
+  console.log('  Examples:');
+  console.log('');
+  console.log('    $ node index.js http://ck101.com/thread-3655237-1-1.html');
+  console.log('');
+});
+
+program.parse(process.argv);
 
 const {delay, maxDepth, ext, width, height} = program;
 
@@ -33,13 +41,13 @@ async function digImageUrls(str = '', lastUrls = [], depth = 0) {
   const newUrls = strToUrls(regexpUrl, str);
   const newImageUrls = newUrls.filter((url) => isImage(url));
 
-  log.debug('new image urls: %s', newImageUrls.length);
+  log.trace('new image urls: %s', newImageUrls.length);
 
   const urls = unique(lastUrls.concat(newUrls));
   const embeddedUrls = urls.filter((url) => ! isImage(url) && (! inArray(usedUrls, url)));
   const imageUrls = urls.filter((url) => isImage(url));
 
-  log.debug('image urls after merged: %s\n', imageUrls.length);
+  log.trace('image urls after merged: %s\n', imageUrls.length);
 
   async function recursiveDig() {
 
@@ -92,7 +100,6 @@ async function main() {
         width,
         height
       },
-      size: 500,
       delay
     });
   }
