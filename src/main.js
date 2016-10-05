@@ -14,7 +14,7 @@ program.version('0.0.1')
 program.on('--help', function(){
   console.log('  Examples:');
   console.log('');
-  console.log('    $ node index.js http://ck101.com/thread-3655237-1-1.html');
+  console.log('    $ img http://ck101.com/thread-3655237-1-1.html');
   console.log('');
 });
 
