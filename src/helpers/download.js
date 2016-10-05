@@ -1,7 +1,9 @@
+import ProgressBar from 'progress';
 import request from 'request';
 import sizeOf from 'image-size';
 import fs from 'fs';
 import {basename, join} from 'path';
+import {log} from '.';
 
 export default function download({urls, dimensionLimit, savePath, headers = {}, delay = 500}) {
 
@@ -9,8 +11,16 @@ export default function download({urls, dimensionLimit, savePath, headers = {}, 
 
     let index = 0;
 
+    const bar = new ProgressBar('\n\nprogress [:bar]\n', {total: urls.length});
+
     (function recursiveDownload() {
-      setTimeout(() => {
+      const timer = setTimeout(() => {
+
+        bar.tick();
+
+        if (bar.complete) {
+          clearTimeout(timer);
+        }
 
         const url = urls[index++];
         if (! url) {
@@ -24,16 +34,16 @@ export default function download({urls, dimensionLimit, savePath, headers = {}, 
 
             if ((width >= dimensionLimit.width) && (height >= dimensionLimit.height)) {
               writeFile(path, buffer)
-                .then(() => console.info('downloaded url %s', url))
-                .catch((err) => console.error('write file error: %s', err));
+                .then(() => log.info('downloaded url %s', url))
+                .catch((err) => log.error('write file error: %s', err));
             }
             else {
-              console.error('dropped url %s due to dissatisfied dimensions %s', url, JSON.stringify(dimensions));
+              log.info('dropped url %s due to dissatisfied dimensions %s', url, JSON.stringify(dimensions));
             }
             recursiveDownload();
           })
           .catch((err) => {
-            console.error('download err: %s', err);
+            log.error('download err: %s', err);
             recursiveDownload();
           });
 
@@ -69,7 +79,7 @@ function singleDownload({url, headers}) {
         dimensions = sizeOf(buffer);
       }
       catch (err) {
-        console.error('error fetching %s dimensions: %s', url, err);
+        log.error('error fetching %s dimensions: %s', url, err);
       }
     }
 

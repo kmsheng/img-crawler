@@ -68,7 +68,7 @@ async function digImageUrls(str = '', lastUrls = [], depth = 0) {
       fileContent = await urlToFileContent(embeddedUrl);
     }
     catch (err) {
-      console.error('ulToFileContent error: %s', err);
+      log.error('ulToFileContent error: %s', err);
       return await recursiveDig();
     }
 
@@ -104,7 +104,7 @@ async function main() {
     });
   }
   catch (err) {
-    console.error('error: %s', err);
+    log.error('error: %s', err);
   }
 }
 
