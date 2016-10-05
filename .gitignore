@@ -1,0 +1,5 @@
+download/
+*.*.swp
+*.*.swo
+node_modules/
+.DS_Store
