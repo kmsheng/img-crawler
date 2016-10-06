@@ -11,7 +11,7 @@ program.version('0.0.1')
   .option('-w, --width [imageWidth]', 'Duration between each request', 300)
   .option('-h, --height [imageHeight]', 'Duration between each request', 300);
 
-program.on('--help', function(){
+program.on('--help', () => {
   console.log('  Examples:');
   console.log('');
   console.log('    $ img http://ck101.com/thread-3655237-1-1.html');
