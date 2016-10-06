@@ -11,7 +11,7 @@ export default function download({urls, dimensionLimit, savePath, headers = {}, 
 
     let index = 0;
 
-    const bar = new ProgressBar('\n\nprogress [:bar]\n', {total: urls.length});
+    const bar = new ProgressBar('\n\nprogress :percent [:bar]\n', {total: urls.length});
 
     (function recursiveDownload() {
       const timer = setTimeout(() => {
