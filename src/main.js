@@ -90,7 +90,7 @@ async function main() {
     const title = getTitleFromStr(body);
     const urls = await digImageUrls(body);
     const urlParts = URL.parse(downloadUrl);
-    const savePath = `download/${urlParts.hostname}/${title}`;
+    const savePath = `download/${urlParts.hostname}/${title} - ${downloadUrl}`;
     await mkdirp(savePath);
     await download({
       urls,
