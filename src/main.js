@@ -37,24 +37,28 @@ const downloadUrl = program.args[program.args.length - 1];
 const usedUrls = [];
 const isImage = (url) => regexpImage.test(url);
 
-if (! downloadUrl) {
-  throw 'Please specify download URL. For example: npm start http://ck101.com/thread-3655237-1-1.html\?ref=idx_hot';
-}
+log.trace(`image extensions: ${ext}`);
+log.trace(`image minimum dimensions: ${width} x ${height}`);
+log.trace(`max depth: ${ext}`);
+log.trace(`request delay: ${delay}`);
 
-log.debug('image types', imageTypes);
+if (! downloadUrl) {
+  log.fatal('Please specify download URL. For example: npm start http://ck101.com/thread-3655237-1-1.html\?ref=idx_hot');
+  process.exit(1);
+}
 
 async function digImageUrls(str = '', lastUrls = [], depth = 0) {
 
   const newUrls = strToUrls(regexpUrl, str);
   const newImageUrls = newUrls.filter((url) => isImage(url));
 
-  log.trace('new image urls: %s', newImageUrls.length);
+  log.trace(`new image urls: ${newImageUrls.length}`);
 
   const urls = unique(lastUrls.concat(newUrls));
   const embeddedUrls = urls.filter((url) => ! isImage(url) && (! inArray(usedUrls, url)));
   const imageUrls = urls.filter((url) => isImage(url));
 
-  log.trace('image urls after merged: %s\n', imageUrls.length);
+  log.trace(`image urls after merged: ${imageUrls.length}\n`);
 
   async function recursiveDig() {
 
@@ -66,8 +70,8 @@ async function digImageUrls(str = '', lastUrls = [], depth = 0) {
 
     usedUrls.push(embeddedUrl);
 
-    log.debug('fetching embedded url: %s', embeddedUrl);
-    log.debug('current depth: %s', depth);
+    log.debug(`fetching embedded url: ${embeddedUrl}`);
+    log.debug(`current depth: ${depth}`);
 
     let fileContent = '';
 
@@ -75,12 +79,12 @@ async function digImageUrls(str = '', lastUrls = [], depth = 0) {
       fileContent = await urlToFileContent(embeddedUrl);
     }
     catch (err) {
-      log.error('ulToFileContent error: %s', err);
+      log.error(`ulToFileContent error: ${err}`);
       return await recursiveDig();
     }
 
     if (fileContent) {
-      log.debug('sleep for %s', delay);
+      log.debug(`sleep for ${delay}`);
       return await lazyLoad(() => digImageUrls(fileContent, urls, depth + 1), delay);
     }
   }
@@ -111,7 +115,7 @@ async function main() {
     });
   }
   catch (err) {
-    log.error('error: %s', err);
+    log.error(`error: ${err}`);
   }
 }
 

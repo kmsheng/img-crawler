@@ -10,7 +10,7 @@ export default function urlToFileContent(url) {
         resolve(body);
       }
       else {
-        log.error('Error fetching %s %s', url, err);
+        log.error(`Error fetching ${url} ${err}`);
         reject(err);
       }
     }

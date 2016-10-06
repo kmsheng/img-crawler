@@ -34,16 +34,19 @@ export default function download({urls, dimensionLimit, savePath, headers = {}, 
 
             if ((width >= dimensionLimit.width) && (height >= dimensionLimit.height)) {
               writeFile(path, buffer)
-                .then(() => log.info('downloaded url %s', url))
-                .catch((err) => log.error('write file error: %s', err));
+                .then(() => log.info(`downloaded url ${url}`))
+                .catch((err) => log.error(`write file error: ${err}`));
+            }
+            else if (! dimensions) {
+              log.warn(`found an image without dimensions ${url}`);
             }
             else {
-              log.info('dropped url %s due to dissatisfied dimensions %s', url, JSON.stringify(dimensions));
+              log.info(`dropped url ${url} due to dissatisfied dimensions ${JSON.stringify(dimensions)}`);
             }
             recursiveDownload();
           })
           .catch((err) => {
-            log.error('download err: %s', err);
+            log.error(`download err: ${err}`);
             recursiveDownload();
           });
 
@@ -79,7 +82,7 @@ function singleDownload({url, headers}) {
         dimensions = sizeOf(buffer);
       }
       catch (err) {
-        log.error('error fetching %s dimensions: %s', url, err);
+        log.error(`error fetching ${url} dimensions: ${err}`);
       }
     }
 
