@@ -30,7 +30,7 @@ program.parse(process.argv);
 const {delay, maxDepth, ext, width, height} = program;
 
 const imageTypes = ext.split(',').map((type) => type.trim());
-const regexpUrl = new RegExp(`(https?:)*//[^/\\s]+/\\S+\\.(${imageTypes.join('|')}|js)`, 'gi');
+const regexpUrl = new RegExp(`(https?:)?//[^/\\s]+/\\S+\\.(${imageTypes.join('|')}|js)`, 'gi');
 const regexpImage = new RegExp(`\\.(${imageTypes.join('|')})$`, 'i');
 const downloadUrl = program.args[program.args.length - 1];
 
