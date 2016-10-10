@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --require babel-core/register ./src/helpers/test/"
+    "test": "mocha --require babel-core/register --require babel-polyfill ./src/helpers/test/"
   },
   "dependencies": {
     "babel-core": "6.17.0",
