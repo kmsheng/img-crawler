@@ -72,9 +72,16 @@ function singleDownload({url, headers}) {
     let buffer = new Buffer([]);
 
     request({url, headers})
+      .on('response', handleResponse)
       .on('data', handleData)
       .on('error', handleError)
       .on('end', handleEnd);
+
+    function handleResponse(res) {
+      if (200 !== res.statusCode) {
+        reject(`Invalid HTTP Status Code ${res.statusCode}: ${url}`);
+      }
+    }
 
     function handleData(chunk) {
       try {
