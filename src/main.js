@@ -16,13 +16,6 @@ program.on('--help', () => {
   console.log('');
   console.log('    $ img http://ck101.com/thread-3655237-1-1.html');
   console.log('');
-
-  log.trace(' trace message');
-  log.debug(' debug message');
-  log.info(' info message');
-  log.warn(' warn message');
-  log.error(' error message');
-  log.fatal(' fatal message');
 });
 
 program.parse(process.argv);
